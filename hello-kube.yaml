@@ -6,12 +6,16 @@ metadata:
     enviroment: testing # label with key is enviroment and value is testing
     project: kubernetes-series
 spec:
-  containers:
-    - image: 080196/hello-kube
-      name: hello-kube
-      ports:
-        - containerPort: 3000
-          protocol: TCP
+  replicas: 2 # number of the pod
+  selector: # The pod selector determining what pods the RC is operating on
+    app: hello-kube # label value
+  spec:
+    containers:
+      - image: 080196/hello-kube
+        name: hello-kube
+        ports:
+          - containerPort: 3000
+            protocol: TCP
 
 ---
 apiVersion: v1
