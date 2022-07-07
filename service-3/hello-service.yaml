@@ -29,3 +29,4 @@ spec:
   ports:
     - port: 6379 # port of the serivce
       targetPort: 6379 # port of the container that service will forward to 
+      # nodePort: 30123 # port of the worker node

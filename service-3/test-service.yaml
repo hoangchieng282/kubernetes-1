@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: application
+spec:
+  containers:
+    - image: 080196/hello-redis
+      name: application
+
+# the content of the application:
+# const redis = require("redis");
+
+# const client = redis.createClient("redis://redis:6379")
+
+# client.on("connect", () => {
+#   console.log("Connect redis success");
+# })
