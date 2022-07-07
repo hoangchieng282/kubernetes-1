@@ -1,0 +1,14 @@
+#The template of the kubectl deploy new version in deployment:
+kubectl set image deployment <deployment-name> <container-name>=<new-image>
+
+#ex: 
+kubectl set image deployment hello-app hello-app=080196/hello-app:v2
+
+#check if the update process have finished?
+kubectl rollout status deploy hello-app
+
+#check the history deploy:
+kubectl rollout history deploy hello-app
+
+#rollback to the version we want <notice that we use --to-revision tag>
+kubectl rollout undo deployment hello-app --to-revision=2
