@@ -1,0 +1,34 @@
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: kubia
+# spec:
+#   rules:
+#     - host: kubia.example.com # domain name
+#   http:
+#     paths:
+#       - path: /
+#         backend:
+#           serviceName: kubia-nodeport # name of the service inside cluster
+#           servicePort: 80
+
+# Ingress là một resource cho phép chúng ta expose HTTP and HTTPS routes từ bên ngoài cluster tới service
+# bên trong cluster của chúng ta. Ingress sẽ giúp chúng ta gán một domain thực tế với service bên trong cluster
+# ---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kubia
+spec:
+  rules:
+    - host: kubia.example.com
+  http:
+    paths:
+      - path: /bar
+        backend:
+          serviceName: kubia-bar
+          servicePort: 80
+      - path: /foo
+        backend:
+          serviceName: kubia-foo
+          servicePort: 80
