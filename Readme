@@ -1,0 +1,4 @@
+All the session was created in order to help me in my self-learning so some file could make you confuse.
+
+# Command alternative with kubernetes mongodb:
+kubectl exec -it mongodb mongo
