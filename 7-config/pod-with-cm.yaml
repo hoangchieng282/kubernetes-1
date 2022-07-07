@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-cm
+  labels:
+    app: application
+spec:
+  containers:
+    - image: 080196/hello-cm
+      name: hello-cm
+      ports:
+        - containerPort: 3000
+      envFrom: # using envFrom instead of env
+        - configMapRef: # referencing the ConfigMap
+            name: postgres-config # name of the ConfigMap
+          prefix: POSTGRES_ # All environment variables will be prefixed with POSTGRES_
+# -----------------------SECRET USAGE---------------------------------------
+# Create secret with this command:
+# $ kubectl create secret generic postgres-config --from-literal=DB=postgres --from-literal=USER=postgres --from-literal=PASSWORD=postgres
+# --------------------------------------------------------------------------
+        # - secretRef:
+        #     name: postgres-config
+        #   prefix: POSTGRES_
+      env:
+        - name: PORT
+          value: "3000"
+        - name: DB_HOST
+          value: postgres
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres
+  labels:
+    app: db
+spec:
+  containers:
+    - image: postgres
+      name: postgres
+      ports:
+        - containerPort: 5432
+      envFrom:
+        - configMapRef:
+            name: postgres-config
+          prefix: POSTGRES_
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    app: db
+spec:
+  selector:
+    app: db
+  ports:
+    - port: 5432
+      targetPort: 5432
+
+
+# -----------------------------------CONTENT-------------------------------------
+# The image app content:
+# const http = require("http");
+# const { Client } = require("pg");
+
+# const { DB_HOST, POSTGRES_USER, POSTGRES_DB, POSTGRES_PASSWORD } = process.env;
+
+# const client = new Client({
+#   host: DB_HOST,
+#   user: POSTGRES_USER,
+#   database: POSTGRES_DB,
+#   password: POSTGRES_PASSWORD,
+#   port: 5432,
+# });
+# client.connect().then(() => {
+#   console.log("connect db successfully");
+# })
+
+# const server = http.createServer((req, res) => {
+#   console.log("Hello env\n")
+# });
+
+# server.listen(process.env.PORT, () => {
+#   console.log("Server listen on port ", process.env.PORT)
+# })

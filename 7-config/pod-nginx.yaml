@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+    - image: nginx:alpine
+      name: web-server
+      volumeMounts:
+        - mountPath: /etc/nginx/conf.d # mount content of the configmap to container
+          name: config
+          readOnly: true
+      # volumeMounts:
+      #   - name: config
+      #     mountPath: /etc/nginx/conf.d/gzip.conf # mount content of my-nginx-config.conf file to gzip.conf file
+      #     subPath: my-nginx-config.conf # Instead of mounting the whole volume, you’re only mounting the my-nginx-config.conf
+      #     readOnly: true
+  volumes:
+    - name: config # volume use configmap as content
+      configMap:
+        name: nginx-config # configmap name
+        # defaultMode: "0600"
+        items:
+          - key: my-nginx-config.conf
+            path: gzip.conf # change name of file from my-nginx-config.conf to gzip.conf
+#  volume của ta sẽ chứa 1 file tên là my-nginx-config.conf,
+#  sau đó file này sẽ được mount tới container web-server ở folder /etc/nginx/conf.d,
+#  ta sẽ có /etc/nginx/conf.d/my-nginx-config.conf
+
