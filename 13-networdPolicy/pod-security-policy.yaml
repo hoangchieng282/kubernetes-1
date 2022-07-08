@@ -1,0 +1,18 @@
+apiVersion: extensions/v1
+kind: PodSecurityPolicy
+metadata:
+  name: default
+spec:
+  hostIPC: false # aren’t allowed to use the hostIPC
+  hostPID: false # aren’t allowed to use the hostPID
+  hostNetwork: false # aren’t allowed to use the hostNetwork
+  privileged: false # aren’t allowed to use privileged
+  readOnlyRootFilesystem: true # allowed to use readOnlyRootFilesystem
+  runAsUser:
+    rule: RunAsAny # can run as any user
+  fsGroup:
+    rule: RunAsAny # can run as any group
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+    - '*' # All volume types can be used in pods.
