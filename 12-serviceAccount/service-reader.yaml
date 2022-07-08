@@ -1,0 +1,18 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: foo
+  name: service-reader
+rules:
+  - apiGroups: [""]
+    verbs: ["get", "list"]
+    resources: ["services"]
+
+# $ kubectl create ns foo
+# namespace/foo created
+# $ kubectl create ns bar
+# namespace/bar created
+# $ kubectl run test --image=luksa/kubectl-proxy -n foo
+# pod/test created
+# $ kubectl run test --image=luksa/kubectl-proxy -n bar
+# pod/test created

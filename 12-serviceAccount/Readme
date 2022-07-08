@@ -1,0 +1,27 @@
+#Use the below command to create a secret cre to the private registry
+#$ kubectl create secret docker-registry <secret-name> --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword>
+
+#Examp:
+#$ kubectl create secret docker-registry my-secret --docker-server=registry.kala.ai --docker-username=username --docker-password=12345678
+
+#Change the secret of the sa by the value above:
+#$ kubectl patch sa default --type json -p '[{"op":"replace","path":"/imagePullSecrets[0].name", "value": "my-secret"}]'
+
+# Create service account:
+# $ kubectl create sa bar
+----------------------------Result---------------------------------------
+# serviceaccount/bar created
+# $ kubectl describe sa bar
+----------------------------Result---------------------------------------
+# Name:                bar
+# Namespace:           default
+# Labels:              <none>
+# Annotations:         <none>
+# Image pull secrets:  <none>
+# Mountable secrets:   bar-token-ndvtr
+# Tokens:              bar-token-ndvtr
+# Events:              <none>
+
+#  Khi ta tạo Role xong, ta cần binding nó tới SA bằng cách dùng câu lệnh như sau
+# $ kubectl create rolebinding test --role=service-reader --serviceaccount=foo:default -n foo
+

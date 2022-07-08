@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+...
+    spec:
+      imagePullSecrets:
+        - name: <secret-name> # secret use to pull image form private registry
+      containers:
+        - name: background-consume-queue
+          image: registry.kala.ai/web-crm/background-consume-queue
+...
+# Chi dinh xai service account khac cho pod
+...
+    spec:
+      serviceAccountName: bar
+      containers:
+        - name: background-consume-queue
+          image: registry.kala.ai/web-crm/background-consume-queue
+...
